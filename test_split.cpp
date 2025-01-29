@@ -10,8 +10,13 @@ g++ split.cpp test_split.cpp -o test_split
 */
 
 #include "split.h"
+#include <cstddef>
+#include <iostream>
 
-void print(Node*& in);
+using namespace std;
+
+void deleteList(Node*& in);
+void print(Node* in);
 
 int main(int argc, char* argv[])
 {
@@ -19,17 +24,49 @@ int main(int argc, char* argv[])
     //  Node(int v, Node* n)
 
     //in node is NULL
-    Node*& nothing = NULL;
-    Node*& odds = NULL;
-    Node*& evens = NULL;
-    split(nothing, odds, evens)
+    Node* nothing = NULL;
+    Node* odds = NULL;
+    Node* evens = NULL;
+    split(nothing, odds, evens);
+
+    print(nothing);
+    print(odds);
+    print(evens);
     
     //both odds and evens in NULL
+    nothing = new Node(0, NULL);
+    Node* thisNode = nothing;
+    for(int i=1; i<10; i++){
+      thisNode->next = new Node(i, NULL);
+      thisNode = thisNode->next;
+    }
+
+    split(nothing, odds, evens);
+
+    print(nothing);
+    print(odds);
+    print(evens);
+
+    deleteList(odds);
+    deleteList(evens);
+
+    print(nothing);
+    print(odds);
+    print(evens);
 }
 
-void print(Node*& in){
+void print(Node* in){
     while(in!=NULL){
-        cout << in->val;
+        cout << in->value << " ";
         in = in->next;
     }
+    cout << "Done." << endl;
+}
+
+void deleteList(Node*& in){
+  while(in!=NULL){
+    Node* temp = in;
+    in = in->next;
+    delete temp;
+  }
 }
